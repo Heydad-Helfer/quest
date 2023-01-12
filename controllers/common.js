@@ -1,24 +1,47 @@
 const mongoose = require("mongoose");
-const ObjectId = require('mongodb').ObjectId
 const Question = mongoose.model("Question");
+
+var ObjectId = require('mongoose').Types.ObjectId;
 
 const controller = {
     // Returns a question
     getQuestion: async (questionId) => {
-        console.log(questionId);
-        let docs = await Question.find({_id: new ObjectId(questionId)});
-        console.log(docs);
-        return true;
+        if(!ObjectId.isValid(questionId)){
+            return null;
+        }
+        let doc = await Question.findOne({_id: questionId});
+        return doc;
     },
 
     // Creates a new question and returns the question's ID
-    createQuestion: (questionData) => {
+    createQuestion: async (questionData) => {
+        let question = new Question();
+        question.questionText = questionData.questionText;
+        question.correctAnswerNum = questionData.correctAnswerNum || null;
+        question.answers = questionData.answers.map(ans => {
+            return {
+                answerText: ans.answerText,
+                answerCount: ans.answerCount || 0,
+            }
+        });
 
+        await question.save();
+        return question._id;
     },
 
     // Answers an existing question by increasing the answer's count
-    answer: (questionId, answerNum) => {
-        return null;
+    answer: async (questionId, answerNum) => {
+        if(!ObjectId.isValid(questionId)){
+            return null;
+        }
+        let question = await controller.getQuestion(questionId);
+        if(answerNum > question.answers.length || answerNum < 0){
+            return null;
+        }
+
+        question.answers[answerNum].answerCount++;
+        await question.save();
+        return question.answers;
     }
 }
 

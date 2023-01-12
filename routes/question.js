@@ -18,10 +18,10 @@ router.get('/:questionId', async (req, res) => {
 });
 
 // Add a new question
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const ctl = controllers[res.locals.type];
     if(ctl.validateNewQuestion(req.body)){
-        let questionId = ctl.createQuestion(req.body);
+        let questionId = await ctl.createQuestion(req.body);
         res
             .status(statusCodes.StatusCodes.CREATED)
             .json({questionId});
@@ -35,10 +35,10 @@ router.post('/', (req, res) => {
 });
 
 // Add a new answer to a question
-router.post('/:questionId/:answerNum', (req, res) => {
+router.post('/:questionId/:answerNum', async (req, res) => {
     const ctl = controllers[res.locals.type];
-    let correct = typeof ctl.validateAnswer === 'function'? ctl.validateAnswer(req.params.questionId, req.params.answerNum):null;
-    let answers = ctl.answer(req.params.questionId, req.params.answerNum);
+    let correct = typeof ctl.validateAnswer === 'function'? await ctl.validateAnswer(req.params.questionId, req.params.answerNum):null;
+    let answers = await ctl.answer(req.params.questionId, req.params.answerNum);
     // Answers is an array with the distribution of the answers' counts.
 
     if(correct !== null){
