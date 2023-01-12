@@ -5,9 +5,9 @@ const statusCodes = require('http-status-codes');
 var router = express.Router();
 
 // GET question data
-router.get('/:questionId', (req, res) => {
+router.get('/:questionId', async (req, res) => {
     const ctl = controllers[res.locals.type];
-    let question = ctl.getQuestion(req.params.questionId);
+    let question = await ctl.getQuestion(req.params.questionId);
     if(question == null){
         res
         	.status(statusCodes.StatusCodes.NOT_FOUND)

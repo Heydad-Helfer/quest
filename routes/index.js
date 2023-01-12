@@ -1,7 +1,7 @@
 var express = require('express');
 const statusCodes = require('http-status-codes');
 
-var questionRouter    = require('./question');
+var questionRouter = require('./question');
 
 var router = express.Router();
 

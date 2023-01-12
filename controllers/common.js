@@ -1,11 +1,14 @@
-const db = require("../db");
+const mongoose = require("mongoose");
+const ObjectId = require('mongodb').ObjectId
+const Question = mongoose.model("Question");
 
 const controller = {
     // Returns a question
-    getQuestion: (questionId) => {
-        let coll = db.getColl();
-        coll.findOne({_id: questionId})
-        return null;
+    getQuestion: async (questionId) => {
+        console.log(questionId);
+        let docs = await Question.find({_id: new ObjectId(questionId)});
+        console.log(docs);
+        return true;
     },
 
     // Creates a new question and returns the question's ID
