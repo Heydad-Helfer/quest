@@ -1,5 +1,5 @@
 var express = require('express');
-var controllers = require('../../controllers/index');
+var controllers = require('../controllers/index');
 const statusCodes = require('http-status-codes');
 
 var router = express.Router();

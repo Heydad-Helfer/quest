@@ -4,7 +4,7 @@ const controller = {
     // Returns a question
     getQuestion: (questionId) => {
         let coll = db.getColl();
-        coll.
+        coll.findOne({_id: questionId})
         return null;
     },
 
