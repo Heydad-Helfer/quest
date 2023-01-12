@@ -4,6 +4,12 @@ const statusCodes = require('http-status-codes');
 
 var router = express.Router();
 
+router.get('/', async (req, res) => {
+    const ctl = controllers[res.locals.type];
+    let questions = await ctl.getQuestions();
+    res.json(questions)
+});
+
 // GET question data
 router.get('/:questionId', async (req, res) => {
     const ctl = controllers[res.locals.type];

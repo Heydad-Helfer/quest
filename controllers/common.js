@@ -3,7 +3,17 @@ const Question = mongoose.model("Question");
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
+// This returns the common controller functions in the context of the specific controller (regarding the MongoDB find)
+
 const controller = {
+    getQuestions: async () => {
+        return (await Question.find()).map((q) => {
+            return {
+                id: q._id,
+                text: q.questionText
+            }
+        });
+    },
     // Returns a question
     getQuestion: async (questionId) => {
         if(!ObjectId.isValid(questionId)){
@@ -45,6 +55,4 @@ const controller = {
     }
 }
 
-
-
-module.exports = controller;
+module.exports = controller

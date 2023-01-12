@@ -9,7 +9,10 @@ var questionSchema = new mongoose.Schema({
         type: Number,
     },
     answers: [{
-        answerText: String,
+        answerText: {
+            type: String,
+            required: "This is required"
+        },
         answerCount: Number
     }]
 }, {collection: 'Questions'});
